@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./CartSlice";
 
 const plantsArray = [
@@ -52,6 +52,13 @@ const plantsArray = [
 ];
 
 function ProductList() {
+    const CartItems = useSelector((state) => state.cart.items);
+
+const calculateTotalQuantity = () => {
+  return CartItems
+    ? CartItems.reduce((total, item) => total + item.quantity, 0)
+    : 0;
+};
   const dispatch = useDispatch();
 
   const [addedToCart, setAddedToCart] = useState({});
@@ -67,6 +74,9 @@ function ProductList() {
 
   return (
     <div className="product-grid">
+    <div className="cart-count">
+  Cart Items: {calculateTotalQuantity()}
+    </div>
       {plantsArray.map((category, index) => (
         <div key={index}>
           <h1>
